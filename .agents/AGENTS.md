@@ -23,3 +23,30 @@ This repository follows standard conventions to maintain high code quality and c
 ## 4. Coding Style and Documentation
 - Every public class, function, and method must include explicit Python type hints.
 - Write concise docstrings for all public interfaces.
+
+## 5. Dependency Direction
+- Business modules must never depend on provider SDKs.
+- Allowed dependency flow:
+  ```text
+  API (or Business Module)
+          │
+          ▼
+     AI Gateway
+          │
+          ▼
+    Policy Engine
+          │
+          ▼
+     Model Router
+          │
+          ▼
+   Provider Factory
+          │
+          ▼
+     AI Provider
+  ```
+
+## 6. Platform Ownership
+- Only provider adapters may reference provider SDK request/response models.
+- All other layers must use platform-owned contracts.
+
