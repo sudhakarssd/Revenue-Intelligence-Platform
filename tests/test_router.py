@@ -59,3 +59,14 @@ def test_router_unrouteable_error():
         router.route(req)
     
     assert "Unable to route task request" in str(exc_info.value)
+
+
+def test_router_invalid_task_string():
+    router = ModelRouter(default_provider="openai", default_model="gpt-4o")
+    
+    class MockRequest:
+        task = "invalid-task-name"
+        
+    provider, target_model = router.route(MockRequest())
+    assert provider == "openai"
+    assert target_model == "gpt-4o"
