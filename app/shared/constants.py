@@ -1,0 +1,3 @@
+# Default platform values
+DEFAULT_TEMPERATURE = 0.7
+DEFAULT_MAX_TOKENS = 2048

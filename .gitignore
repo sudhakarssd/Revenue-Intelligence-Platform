@@ -1,0 +1,26 @@
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local configuration environment variables
+.env
+
+# Editor settings (VS Code, PyCharm, etc.)
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+Thumbs.db
