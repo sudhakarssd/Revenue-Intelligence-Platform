@@ -53,8 +53,12 @@ class AIGateway:
         # Step 4: Record telemetry request metrics
         start_time = self.telemetry.record_request(request)
 
-        # Step 5: Execute generation on the target provider
-        response = await provider.generate(request, target_model=target_model)
+        # Step 5: Inject target_model into extra_params and execute generation on the provider
+        extra_params = request.extra_params.copy() if request.extra_params else {}
+        extra_params["target_model"] = target_model
+        resolved_request = request.model_copy(update={"extra_params": extra_params})
+
+        response = await provider.generate(resolved_request)
 
         # Step 6: Log latency and token usage metrics
         self.telemetry.record_response(request, response, start_time)

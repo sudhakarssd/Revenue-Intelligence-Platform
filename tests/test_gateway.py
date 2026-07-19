@@ -44,7 +44,8 @@ async def test_gateway_generation_success():
     mock_router.route.assert_called_once_with(req)
     mock_factory.get_provider.assert_called_once_with("openai")
     mock_telemetry.record_request.assert_called_once_with(req)
-    mock_provider.generate.assert_called_once_with(req, target_model="gpt-4o")
+    called_req = mock_provider.generate.call_args[0][0]
+    assert called_req.extra_params["target_model"] == "gpt-4o"
     mock_telemetry.record_response.assert_called_once_with(req, mock_response, 100.0)
 
 

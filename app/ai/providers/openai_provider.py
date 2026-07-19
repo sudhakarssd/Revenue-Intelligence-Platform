@@ -11,7 +11,12 @@ class OpenAIProvider(BaseAIProvider):
     def __init__(self, api_key: str, base_url: Optional[str] = None):
         self.client = AsyncOpenAI(api_key=api_key, base_url=base_url)
 
-    async def generate(self, request: AIRequest, target_model: str) -> AIResponse:
+    async def generate(self, request: AIRequest) -> AIResponse:
+        # Retrieve resolved target model from extra_params
+        target_model = "gpt-4o"
+        if request.extra_params and "target_model" in request.extra_params:
+            target_model = request.extra_params["target_model"]
+
         # Construct message dictionaries matching OpenAI format
         messages = [
             {
@@ -32,7 +37,8 @@ class OpenAIProvider(BaseAIProvider):
                 kwargs["max_tokens"] = request.max_tokens
             
             if request.extra_params:
-                kwargs.update(request.extra_params)
+                sdk_params = {k: v for k, v in request.extra_params.items() if k != "target_model"}
+                kwargs.update(sdk_params)
             
             response = await self.client.chat.completions.create(**kwargs)
             
